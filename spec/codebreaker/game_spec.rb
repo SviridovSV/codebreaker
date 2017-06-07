@@ -136,7 +136,6 @@ module Codebreaker
         subject.check_matches(user_code)
         expect(subject.instance_variable_get(:@result)).to eq ''
       end
-
     end
   end
 end

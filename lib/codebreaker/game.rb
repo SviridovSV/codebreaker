@@ -31,6 +31,7 @@ module Codebreaker
     end
 
     def check_matches(user_code)
+      @result = ""
       return @result = '++++' if user_code == @secret_code
       sum_array = @secret_code.chars.zip(user_code.chars)
       sum_array.delete_if { |secret_item, user_item| @result << '+' if secret_item == user_item }
