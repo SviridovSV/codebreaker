@@ -42,6 +42,13 @@ module Codebreaker
         expect { subject.game_begin }.to output(/Congratulations! You won!/).to_stdout
         subject.game_begin
       end
+
+      it 'asks to save results if user won' do
+        allow(subject).to receive_message_chain(:gets, :chomp)
+        allow(game).to receive(:check_enter).and_return('++++')
+        expect { subject.send(:save_result) }.to output(/Do you want to save your results? (Enter 'y' if yes, or any button if no)/).to_stdout
+
+      end
     end
   end
 end

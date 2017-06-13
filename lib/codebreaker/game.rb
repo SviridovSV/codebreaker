@@ -31,18 +31,38 @@ module Codebreaker
     end
 
     def check_matches(user_code)
-      @result = ""
       return @result = '++++' if user_code == @secret_code
       sum_array = @secret_code.chars.zip(user_code.chars)
-      sum_array.delete_if { |secret_item, user_item| @result << '+' if secret_item == user_item }
-      sum_array.transpose[0].each { |item| @result << '-' if sum_array.transpose[1].include?(item) }
+      exact_match_calculation(sum_array)
+      just_match_calculation(sum_array)
       @result
+    end
+
+    def save_to_file(filename, user)
+      File.open(filename, 'a') do |file|
+        file.puts "#{username}|used attempts #{ATTEMPT_NUMBER - @available_attempts};"
+      end
     end
 
     private
 
+    def exact_match_calculation(array)
+      array.delete_if { |secret_item, user_item| @result << '+' if secret_item == user_item }
+    end
+
+    def just_match_calculation(array)
+      rest_secret_code, rest_user_code = array.transpose
+      rest_secret_code.each do |item|
+        position = rest_user_code.index(item)
+        if position
+          @result << '-'
+          rest_user_code.delete_at(position)
+        end
+      end
+    end
+
     def code_valid?(code)
-      code.to_s.size == 4 && code.to_s.match(/^[1-6]{4}$/)
+      code.to_s.match(/^[1-6]{4}$/)
     end
   end
 end

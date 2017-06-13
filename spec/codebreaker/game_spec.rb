@@ -101,40 +101,69 @@ module Codebreaker
     end
 
     context '#check_matches' do
-      let(:user_code) {'1234'}
 
       before do
         subject.start
       end
 
-      it 'return ++++ if user_code matches secret_code exactly' do
-        subject.instance_variable_set(:@secret_code, '1234')
-        subject.check_matches(user_code)
-        expect(subject.instance_variable_get(:@result)).to eq '++++'
-      end
+      sample_data = [
+        ['1111', '2222', ''],
+        ['1211', '3333', ''],
+        ['1121', '3333', ''],
+        ['1112', '3333', ''],
+        ['1112', '4444', ''],
+        ['1212', '3456', ''],
+        ['3334', '3331', '+++'],
+        ['3433', '3133', '+++'],
+        ['3343', '3313', '+++'],
+        ['4333', '1333', '+++'],
+        ['4332', '1332', '+++'],
+        ['4323', '1323', '+++'],
+        ['4233', '1233', '+++'],
+        ['2345', '2346', '+++'],
+        ['2534', '2634', '+++'],
+        ['2354', '2364', '+++'],
+        ['1234', '5123', '---'],
+        ['3612', '1523', '---'],
+        ['3612', '2531', '---'],
+        ['1234', '5612', '--'],
+        ['1234', '5621', '--'],
+        ['4321', '1234', '----'],
+        ['3421', '1234', '----'],
+        ['3412', '1234', '----'],
+        ['4312', '1234', '----'],
+        ['1423', '1234', '+---'],
+        ['1342', '1234', '+---'],
+        ['5255', '2555', '++--'],
+        ['5525', '2555', '++--'],
+        ['5552', '2555', '++--'],
+        ['6262', '2626', '----'],
+        ['6622', '2626', '++--'],
+        ['2266', '2626', '++--'],
+        ['2662', '2626', '++--'],
+        ['6226', '2626', '++--'],
+        ['3135', '3315', '++--'],
+        ['3513', '3315', '++--'],
+        ['3351', '3315', '++--'],
+        ['1353', '3315', '+---'],
+        ['5313', '3315', '++--'],
+        ['1533', '3315', '----'],
+        ['5331', '3315', '+---'],
+        ['5133', '3315', '----'],
+        ['3361', '3315', '++-'],
+        ['3136', '3635', '++-'],
+        ['1336', '6334', '++-'],
+        ['1363', '6323', '++-'],
+        ['1633', '6233', '++-'],
+        ['1234', '4343', '--']
+      ];
 
-      it 'returns plus if one number matches exactly' do
-        subject.instance_variable_set(:@secret_code, '1556')
-        subject.check_matches(user_code)
-        expect(subject.instance_variable_get(:@result)).to eq '+'
-      end
-
-      it 'returns minus if one number just matches' do
-        subject.instance_variable_set(:@secret_code, '4566')
-        subject.check_matches(user_code)
-        expect(subject.instance_variable_get(:@result)).to eq '-'
-      end
-
-      it 'returns +- if one number matches exactly and one number just matches' do
-        subject.instance_variable_set(:@secret_code, '1456')
-        subject.check_matches(user_code)
-        expect(subject.instance_variable_get(:@result)).to eq '+-'
-      end
-
-      it 'returns no_matches if nothing matches' do
-        subject.instance_variable_set(:@secret_code, '5566')
-        subject.check_matches(user_code)
-        expect(subject.instance_variable_get(:@result)).to eq ''
+      sample_data.each do |item|
+        it "returns #{item[2]} when user code #{item[1]} and secret code  #{item[0]}" do
+          subject.instance_variable_set(:@secret_code, item[0])
+          subject.check_matches(item[1])
+          expect(subject.instance_variable_get(:@result)).to eq item[2]
+        end
       end
     end
   end

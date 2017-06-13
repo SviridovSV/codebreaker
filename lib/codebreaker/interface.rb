@@ -17,7 +17,6 @@ module Codebreaker
         puts game_return
         if game_return == "++++"
           puts "Congratulations! You won!"
-          save_result
           break
         end
       end
@@ -43,14 +42,8 @@ module Codebreaker
       if answer == 'y'
         puts "Enter your name"
         username = gets.chomp
-        save_to_file("game_results.txt", username)
+        @game.save_to_file("game_results.txt", username)
         new_game
-      end
-    end
-
-    def save_to_file(filename, user)
-      File.open(filename, 'a') do |file|
-        file.puts "#{username}|used attempts #{Game::ATTEMPT_NUMBER - @game.available_attempts};"
       end
     end
   end
