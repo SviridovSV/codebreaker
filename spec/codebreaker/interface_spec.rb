@@ -11,7 +11,7 @@ module Codebreaker
       end
 
       it "shows greeting massege" do
-        expect { interface }.to output(/Welcome! Let's begin our game./).to_stdout
+        expect { subject }.to output(/Welcome! Let's begin our game./).to_stdout
       end
     end
 
@@ -37,6 +37,13 @@ module Codebreaker
         allow(subject).to receive_message_chain(:gets, :chomp)
         allow(game).to receive(:check_input).and_return('++++')
         expect { subject.game_begin }.to output(/Congratulations! You won!/).to_stdout
+        subject.game_begin
+      end
+
+      it 'shows warning if no attemts left' do
+        allow(game).to receive(:available_attempts).and_return(0)
+        allow(subject).to receive(:save_result)
+        expect { subject.game_begin }.to output(/There are no attempts left/).to_stdout
         subject.game_begin
       end
     end
