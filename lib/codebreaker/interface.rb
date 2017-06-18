@@ -1,49 +1,47 @@
 require "codebreaker/game"
+require 'codebreaker/interface_helper'
 
 module Codebreaker
   class Interface
+    include Ui
 
     def initialize
       @game = Game.new
+      greeting
     end
 
     def game_begin
-      puts "Welcome! Let's begin our game."
       @game.start
       while @game.available_attempts > 0
-        puts "Please, enter your code or 'h' for hint"
-        user_answer = gets.chomp
-        game_return = @game.check_enter(user_answer)
-        puts game_return
-        if game_return == "++++"
-          puts "Congratulations! You won!"
+        guess = proposal_and_input
+        rez = @game.check_input(guess)
+        if rez == '++++'
+          lucky_combination
           break
         end
       end
+      no_attempts unless @game.available_attempts > 0
       save_result
     end
 
     private
 
+    def save_result
+      user_answer = save_result_proposition
+      if user_answer == 'y'
+        user_name = username
+        @game.save_to_file("game_results.txt", user_name)
+      end
+      new_game
+    end
+
     def new_game
-      puts "Do You want to play again ? (Enter 'y' if yes, or any button if no)"
-      answer = gets.chomp
-      if answer == 'y'
+      user_answer = new_game_proposition
+      if user_answer == 'y'
         @game = Game.new
         game_begin
       else
-        puts "See You later!!!"
-      end
-    end
-
-    def save_result
-      puts "Do you want to save your results? (Enter 'y' if yes, or any button if no)"
-      answer = gets.chomp
-      if answer == 'y'
-        puts "Enter your name"
-        username = gets.chomp
-        @game.save_to_file("game_results.txt", username)
-        new_game
+        goodbye
       end
     end
   end
