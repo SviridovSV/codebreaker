@@ -16,6 +16,7 @@ module Codebreaker
         guess = proposal_and_input
         next if hint_call?(guess)
         rez = @game.check_input(guess)
+        puts rez
         break if win?(rez)
       end
       no_attempts unless @game.available_attempts > 0

@@ -3,7 +3,7 @@ module Codebreaker
 
     ATTEMPT_NUMBER = 10
 
-    attr_reader :available_attempts
+    attr_reader :available_attempts, :hint
 
     def initialize
       @secret_code = ""

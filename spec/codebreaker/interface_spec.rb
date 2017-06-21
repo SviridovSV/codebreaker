@@ -5,19 +5,22 @@ module Codebreaker
 
     subject(:interface) { Interface.new }
 
+    let(:game) { subject.instance_variable_get(:@game) }
+
     context '#initialize' do
       it "creates object like Game class" do
         expect(subject.instance_variable_get(:@game).instance_of?(Game)).to be true
       end
 
-      it "shows greeting massege" do
+      it "shows greeting message" do
         expect { subject }.to output(/Welcome! Let's begin our game./).to_stdout
       end
     end
 
     context '#game_begin' do
-      let(:game) { subject.instance_variable_get(:@game) }
 
+      let(:ask_hint) { 'h' }
+      let(:ask_code) { '1234' }
 
       it 'calls start from game-object' do
         allow(game).to receive(:available_attempts).and_return(0)
@@ -48,10 +51,23 @@ module Codebreaker
         expect { subject.game_begin }.to output(/There are no attempts left/).to_stdout
         subject.game_begin
       end
+
+      it 'check input and return true if user asks hint' do
+        expect(subject.send(:hint_call?, ask_hint)).to eq true
+      end
+
+      it 'check input and return false if user does not ask hint' do
+        expect(subject.send(:hint_call?, ask_code)).to eq false
+      end
+
+      it 'checks input and returns no hint if user asks hint twice' do
+        allow(game).to receive(:hint).and_return(false)
+        expect(subject).to receive(:no_hint).and_return(true)
+        subject.send(:hint_call?, ask_hint)
+      end
     end
 
     context '#save_result' do
-      let(:game) { subject.instance_variable_get(:@game) }
 
       it 'calls save_to_file from game-object if user agreed' do
         allow(subject).to receive(:save_result_proposition).and_return('y')
