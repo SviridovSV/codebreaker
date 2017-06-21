@@ -13,18 +13,16 @@ module Codebreaker
     end
 
     def start
-      @secret_code = (1..4).map { rand(1..6) }.join
+      @secret_code = secret_code
     end
 
     def check_input(code)
-      return 'Incorrect format' unless code_valid?(code)||code.to_s.match(/^h$/)
+      return 'Incorrect format' unless code_valid?(code)
       @available_attempts -= 1
-      return hint if code.to_s.match(/^h$/)
       return check_matches(code)
     end
 
-    def hint
-      return 'No hints left' unless @hint
+    def hint_answer
       @hint = false
       @secret_code.split('').sample
     end
@@ -45,6 +43,10 @@ module Codebreaker
 
     private
 
+    def secret_code
+      (1..4).map { rand(1..6) }.join
+    end
+
     def exact_match_calculation(array)
       array.delete_if { |secret_item, user_item| @result << '+' if secret_item == user_item }
     end
@@ -53,10 +55,9 @@ module Codebreaker
       rest_secret_code, rest_user_code = array.transpose
       rest_secret_code.each do |item|
         position = rest_user_code.index(item)
-        if position
-          @result << '-'
-          rest_user_code.delete_at(position)
-        end
+        next unless position
+        @result << '-'
+        rest_user_code.delete_at(position)
       end
     end
 

@@ -5,7 +5,7 @@ module Codebreaker
 
   RSpec.describe Game do
 
-    let(:game) { Game.new }
+    subject(:game) { Game.new }
 
     context '#initialize' do
       it 'saves secret code' do
@@ -68,32 +68,22 @@ module Codebreaker
         expect { subject.check_input(valid_code) }.to change { subject.available_attempts }.from(10).to(9)
       end
 
-      it 'returns hint if user entered h' do
-        allow(subject).to receive(:hint).and_return('2')
-        expect(subject.check_input(hint_code)).to eq('2')
-      end
-
       it 'returns the result of matching' do
         allow(subject).to receive(:check_matches).with(valid_code).and_return('+')
         expect(subject.check_input(valid_code)).to eq '+'
       end
     end
 
-    context '#hint' do
+    context '#hint_answer' do
 
       it 'returns one number from secret code' do
         subject.instance_variable_set(:@secret_code, '1234')
-        expect(subject.hint).to match(/^[1-4]{1}$/)
+        expect(subject.hint_answer).to match(/^[1-4]{1}$/)
       end
 
       it 'change hint to false' do
-        subject.hint
+        subject.hint_answer
         expect(subject.instance_variable_get(:@hint)).to be false
-      end
-
-      it 'returns no hint if hint was asked once more' do
-        subject.instance_variable_set(:@hint, false)
-        expect(subject.hint).to eq 'No hints left'
       end
     end
 

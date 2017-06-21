@@ -3,7 +3,7 @@ require 'spec_helper'
 module Codebreaker
   RSpec.describe Interface do
 
-    let(:interface) { Interface.new }
+    subject(:interface) { Interface.new }
 
     context '#initialize' do
       it "creates object like Game class" do

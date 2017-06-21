@@ -41,4 +41,9 @@ module Ui
   def no_attempts
     puts "There are no attempts left"
   end
+
+  def no_hint
+    puts "There is no hint left"
+    true
+  end
 end

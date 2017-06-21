@@ -14,11 +14,9 @@ module Codebreaker
       @game.start
       while @game.available_attempts > 0
         guess = proposal_and_input
+        next if hint_call?(guess)
         rez = @game.check_input(guess)
-        if rez == '++++'
-          lucky_combination
-          break
-        end
+        break if win?(rez)
       end
       no_attempts unless @game.available_attempts > 0
       save_result
@@ -28,21 +26,37 @@ module Codebreaker
 
     def save_result
       user_answer = save_result_proposition
-      if user_answer == 'y'
-        user_name = username
-        @game.save_to_file("game_results.txt", user_name)
-      end
-      new_game
+      return new_game unless user_agree?(user_answer)
+      user_name = username
+      @game.save_to_file("game_results.txt", user_name)
     end
 
     def new_game
       user_answer = new_game_proposition
-      if user_answer == 'y'
-        @game = Game.new
-        game_begin
-      else
-        goodbye
-      end
+      return goodbye unless user_agree?(user_answer)
+      @game = Game.new
+      game_begin
+    end
+
+    def hint_input?(code)
+      code.to_s.match(/^h$/)
+    end
+
+    def hint_call?(code)
+      return false unless hint_input?(code)
+      no_hint unless @game.hint
+      puts @game.hint_answer
+      true
+    end
+
+    def win?(combination)
+      return false unless combination == '++++'
+      lucky_combination
+      true
+    end
+
+    def user_agree?(answer)
+      answer == 'y'
     end
   end
 end
