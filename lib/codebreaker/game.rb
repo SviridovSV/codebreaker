@@ -9,7 +9,7 @@ module Codebreaker
       @hint = true
       @available_attempts = ATTEMPT_NUMBER
       @result = ""
-      @secret_code = secret_code
+      @secret_code = generate_code
     end
 
     def check_input(code)
@@ -39,7 +39,7 @@ module Codebreaker
 
     private
 
-    def secret_code
+    def generate_code
       (1..4).map { rand(1..6) }.join
     end
 
