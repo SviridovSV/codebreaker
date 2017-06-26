@@ -6,13 +6,9 @@ module Codebreaker
     attr_reader :available_attempts, :hint
 
     def initialize
-      @secret_code = ""
       @hint = true
       @available_attempts = ATTEMPT_NUMBER
       @result = ""
-    end
-
-    def start
       @secret_code = secret_code
     end
 

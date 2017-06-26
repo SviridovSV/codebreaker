@@ -11,7 +11,6 @@ module Codebreaker
     end
 
     def game_begin
-      @game.start
       while @game.available_attempts > 0
         guess = proposal_and_input
         next if hint_call?(guess)

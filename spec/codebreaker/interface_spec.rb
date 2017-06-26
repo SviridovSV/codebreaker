@@ -25,7 +25,6 @@ module Codebreaker
       it 'calls start from game-object' do
         allow(game).to receive(:available_attempts).and_return(0)
         allow(subject).to receive(:save_result)
-        expect(game).to receive(:start)
         subject.game_begin
       end
 

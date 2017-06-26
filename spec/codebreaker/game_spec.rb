@@ -8,12 +8,9 @@ module Codebreaker
     subject(:game) { Game.new }
 
     context '#initialize' do
+
       it 'saves secret code' do
         expect(subject.instance_variable_defined?(:@secret_code)).to be true
-      end
-
-      it "sets secret code equal ''" do
-        expect(subject.instance_variable_get(:@secret_code)).to eq('')
       end
 
       it 'saves hint' do
@@ -30,25 +27,6 @@ module Codebreaker
 
       it "sets result equal ''" do
         expect(subject.instance_variable_get(:@result)).to eq('')
-      end
-    end
-
-    context '#start' do
-
-      before do
-        subject.start
-      end
-
-      it 'create secret code' do
-        expect(subject.instance_variable_get(:@secret_code)).not_to be_empty
-      end
-
-      it 'saves 4 numbers secret code' do
-        expect(subject.instance_variable_get(:@secret_code).length).to eq(4)
-      end
-
-      it 'saves secret code with numbers from 1 to 6' do
-        expect(subject.instance_variable_get(:@secret_code)).to match(/^[1-6]{4}$/)
       end
     end
 
@@ -89,10 +67,6 @@ module Codebreaker
 
     context '#check_matches' do
 
-      before do
-        subject.start
-      end
-
       CodebreakerData.data.each do |item|
         it "returns #{item[2]} when user code #{item[1]} and secret code  #{item[0]}" do
           subject.instance_variable_set(:@secret_code, item[0])
@@ -108,7 +82,6 @@ module Codebreaker
       let(:username) {"Max"}
 
       before do
-        subject.start
         subject.save_to_file(filename, username)
         allow(File).to receive(:open).with(filename,'a')
       end
