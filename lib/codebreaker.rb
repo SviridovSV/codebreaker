@@ -1,5 +1,5 @@
 require "codebreaker/version"
+require "codebreaker/interface"
 
-module Codebreaker
-  # Your code goes here...
-end
+
+
