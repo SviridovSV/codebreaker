@@ -27,8 +27,7 @@ module Codebreaker
     def save_result
       user_answer = save_result_proposition
       return new_game unless user_agree?(user_answer)
-      user_name = username
-      @game.save_to_file("game_results.txt", user_name)
+      @game.save_to_file("game_results.txt", username)
     end
 
     def new_game

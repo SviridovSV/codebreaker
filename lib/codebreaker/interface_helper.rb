@@ -8,8 +8,7 @@ module Ui
 
   def proposal_and_input
     puts "Please, enter your code or 'h' for hint"
-    user_answer = gets.chomp
-    user_answer
+    gets.chomp
   end
 
   def lucky_combination
@@ -18,20 +17,17 @@ module Ui
 
   def save_result_proposition
     puts "Do you want to save your results? (Enter 'y' if yes, or any button if no)"
-    answer = gets.chomp
-    answer
+    gets.chomp
   end
 
   def username
     puts "Enter your name"
-    username = gets.chomp
-    username
+    gets.chomp
   end
 
   def new_game_proposition
     puts "Do You want to play again ? (Enter 'y' if yes, or any button if no)"
-    answer = gets.chomp
-    answer
+    gets.chomp
   end
 
   def goodbye
