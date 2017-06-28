@@ -10,6 +10,7 @@ module Codebreaker
       @available_attempts = ATTEMPT_NUMBER
       @result = ""
       @secret_code = generate_code
+      @win_game = nil
     end
 
     def check_input(code)
