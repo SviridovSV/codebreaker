@@ -3,7 +3,7 @@ module Codebreaker
 
     ATTEMPT_NUMBER = 10
 
-    attr_reader :available_attempts, :hint
+    attr_reader :available_attempts, :hint, :win_game
 
     def initialize
       @hint = true
@@ -15,6 +15,7 @@ module Codebreaker
     def check_input(code)
       return 'Incorrect format' unless code_valid?(code)
       @available_attempts -= 1
+      @win_game = true if check_matches(code) == '++++'
       return check_matches(code)
     end
 
