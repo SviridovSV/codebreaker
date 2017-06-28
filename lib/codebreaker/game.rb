@@ -24,6 +24,7 @@ module Codebreaker
     end
 
     def check_matches(user_code)
+      @result = ""
       return @result = '++++' if user_code == @secret_code
       sum_array = @secret_code.chars.zip(user_code.chars)
       exact_match_calculation(sum_array)
